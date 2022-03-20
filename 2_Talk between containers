@@ -1,0 +1,12 @@
+version: "3"
+services:
+  redis-server:
+    image: "redis"
+  node-app:
+    restart: always
+    build: .
+    ports:
+      - "4001:8081"
+
+
+# general container is talking with redis in different container
