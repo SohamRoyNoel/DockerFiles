@@ -1,0 +1,25 @@
+sudo: required
+language: generic
+
+services:
+  - docker
+
+before_install:
+  - docker build -t noelroy/devops-repo -f Dockerfile.dev .
+
+script:
+  - docker run -e CI=true USERNAME/docker-react npm run test
+
+deploy:
+  provider: elasticbeanstalk # AWS deployment agent name
+  region: "us-west-2" # region from EBS url
+  app: "docker" # app name
+  env: "Docker-env" # EBS environment created by AWS
+  bucket_name: "elasticbeanstalk-us-west-2-56666363636887" # the same bucket created by AWS (while deploy) while creating EBS instance where Travis will put build zip
+  bucket_path: "docker" # same name as app
+  on:
+    branch: master #while code is pushed in master only
+  access_key_id: $AWS_ACCESS_KEY # define this in Travis env, and just import the variable here
+  secret_access_key:
+    secure: $AWS_SECRET_KEY # define this in Travis env, and just import the variable here
+
