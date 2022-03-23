@@ -8,4 +8,5 @@ RUN npm run build
 
 # Run Phase
 FROM nginx
+EXPOSE 80 # it has no work in local machine, but at the time of deployment into AWS-EBS it actually opens the port
 COPY --from=builder /app/build /usr/share/nginx/html
